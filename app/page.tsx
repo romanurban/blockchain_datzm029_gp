@@ -1,101 +1,92 @@
-import Image from "next/image";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="max-w-screen-lg w-full m-[10px] mx-auto overflow-hidden rounded-[0.5rem] border bg-background shadow">
+      <Tabs defaultValue="overview" className="m-[10px]">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <Card>
+              <CardHeader>
+                <CardTitle>Total Investments</CardTitle>
+                <CardDescription>Overall investments made</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">$1,234,567</p>
+              </CardContent>
+              <CardFooter>
+                <p className="text-xs text-muted-foreground">+10% from last month</p>
+              </CardFooter>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Active Listings</CardTitle>
+                <CardDescription>Properties currently available</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">123</p>
+              </CardContent>
+              <CardFooter>
+                <p className="text-xs text-muted-foreground">+5 new listings today</p>
+              </CardFooter>
+            </Card>
+
+          <Card>
+              <CardHeader>
+                <CardTitle>Total Revenue</CardTitle>
+                <CardDescription>Revenue generated</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">$45,231.89</p>
+              </CardContent>
+              <CardFooter>
+                <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+              </CardFooter>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>New Users</CardTitle>
+                <CardDescription>Users joined this month</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">350</p>
+              </CardContent>
+              <CardFooter>
+                <p className="text-xs text-muted-foreground">+50% from last month</p>
+              </CardFooter>
+            </Card>
+          </div>
+        </TabsContent>
+        <TabsContent value="analytics">
+          <div className="p-6">
+            <h2 className="text-xl font-bold mb-4">Analytics</h2>
+            <div className="w-full h-64 bg-gray-200 flex items-center justify-center rounded-lg">
+              <svg width="100%" height="100%" viewBox="0 0 400 200">
+                <rect width="100%" height="100%" fill="#e2e8f0" />
+                <rect x="50" y="50" width="50" height="100" fill="#4a5568" />
+                <rect x="150" y="30" width="50" height="120" fill="#4a5568" />
+                <rect x="250" y="70" width="50" height="80" fill="#4a5568" />
+                <rect x="350" y="90" width="50" height="60" fill="#4a5568" />
+              </svg>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
