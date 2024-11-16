@@ -23,5 +23,11 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "devDependencies": {
+    "typescript": "^5.2.0"
+  },
+  "scripts": {
+    "postinstall": "tsc -v"
+  }
 }
