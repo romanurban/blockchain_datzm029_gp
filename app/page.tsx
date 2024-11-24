@@ -1,13 +1,25 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CardItem } from "@/components/CardItem";
+import { ImageCard } from "@/components/ImageCard";
+import { DashboardTransactions } from "@/components/DashboardTransactions";
+
 
 export default function Home() {
+
+  const transactions = [
+    { id: 1, date: "2023-10-01", amount: "$500" },
+    { id: 2, date: "2023-09-28", amount: "$300" },
+    // Add more transactions as needed
+  ];
+
   return (
     <div className="max-w-screen-lg w-full m-[10px] mx-auto overflow-hidden rounded-[0.5rem] border bg-background shadow">
       <Tabs defaultValue="overview" className="m-[10px]">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="analytics">Reports</TabsTrigger>
+          <TabsTrigger value="analytics">Notifications</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -35,6 +47,14 @@ export default function Home() {
               value="200"
               footerText="+50% from last month"
             />
+          </div>
+
+          <div className="grid gap-4 mt-4 md:grid-cols-2">
+            <ImageCard
+              imageUrl="/sample.png"
+              altText="Descriptive Alt Text"
+            />
+            <DashboardTransactions transactions={transactions} />
           </div>
         </TabsContent>
       </Tabs>
