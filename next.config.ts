@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       "@/components": path.resolve(__dirname, "./components"),
       "@/lib": path.resolve(__dirname, "./lib"),
       "@/hooks": path.resolve(__dirname, "./hooks"),
+      "@/context": path.resolve(__dirname, "./context"),
     };
     return config;
   },
