@@ -1,4 +1,3 @@
-// app/auto-invest.tsx
 export default function AutoInvest() {
     return (
       <div className="flex-1 p-4">

@@ -1,4 +1,3 @@
-// components/SideMenu.tsx
 import Link from "next/link";
 
 export function SideMenu() {

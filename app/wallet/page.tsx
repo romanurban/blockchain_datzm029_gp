@@ -1,4 +1,3 @@
-// app/wallet.tsx
 export default function Wallet() {
     return (
       <div className="flex-1 p-4">
