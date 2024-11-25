@@ -1,7 +1,5 @@
-// app/layout.tsx
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
-import { SideMenu } from '@/components/SideMenu';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

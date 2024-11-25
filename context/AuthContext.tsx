@@ -3,6 +3,12 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
+
 interface AuthContextType {
   account: string | null;
   connectWallet: () => Promise<void>;
@@ -26,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setAccount(accounts[0]);
         localStorage.setItem('walletConnected', 'true');
       } catch (error) {
-        console.error('User rejected the request.');
+        console.error('User rejected the request or an error occurred:', error);
       }
     } else {
       alert('Please install MetaMask!');
