@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "dotnet": "^1.1.4",
     "ethers": "^5.7.2",
     "hardhat": "^2.22.17",
+    "hardhat-ethers": "^1.0.1",
     "lucide-react": "^0.460.0",
     "next": "^15.0.3",
     "react": "^18.3.1",
