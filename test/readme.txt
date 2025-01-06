@@ -1,0 +1,3 @@
+1. “contractAddress” is the address where your contract is deployed. It’s displayed in your console logs when you run a deployment script (for example, “npx hardhat run scripts/deploy.js”). Once you see the “Contract deployed to: 0x...” message, copy that address.  
+
+2. The “abi” is a JSON array describing the contract’s interface. After compiling with Hardhat, check the generated artifact file, for example “artifacts/contracts/SampleContract.sol/SampleContract.json.” The file contains a “compilerOutput” object with an “abi” property. Use that as your contract’s ABI.  

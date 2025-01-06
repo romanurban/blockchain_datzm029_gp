@@ -1,14 +1,49 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ethers } from 'ethers';
-import { JsonRpcProvider } from 'ethers/providers';
 
-const provider = new JsonRpcProvider("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID");
-const privateKey = "YOUR_PRIVATE_KEY";
+const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/dd54350be5fa455885d349597ff28d53");
+const privateKey = "YnEGAgMNAkPVlZe147s6gvrohdkzBAU+uG4bA0jzBlpzsUYThnWDKQ";
 const wallet = new ethers.Wallet(privateKey, provider);
 
 const contractAddress = "YOUR_CONTRACT_ADDRESS";
-const abi: never[] = [
-    // ABI of your contract
+const abi = [
+    {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "initialValue",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "getValue",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "newValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "setValue",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
 ];
 
 const contract = new ethers.Contract(contractAddress, abi, wallet);
