@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const connectWallet = async () => {
     if (typeof window?.ethereum !== 'undefined') {
       try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         const accounts = await provider.send('eth_requestAccounts', []);
         setAccount(accounts[0]);
         localStorage.setItem('walletConnected', 'true');
@@ -50,14 +50,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       if (isWalletConnected && typeof window.ethereum !== 'undefined') {
         try {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          const accounts = await provider.listAccounts();
-          if (accounts.length > 0) {
-            setAccount(accounts[0].address);
-          } else {
-            localStorage.removeItem('walletConnected');
-            setAccount(null);
-          }
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const address = await signer.getAddress();
+          setAccount(address);
         } catch (error) {
           console.error('Error checking wallet connection:', error);
           localStorage.removeItem('walletConnected');
