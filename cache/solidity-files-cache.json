@@ -35,6 +35,41 @@
       "artifacts": [
         "SampleContract"
       ]
+    },
+    "/home/urbanroman/projects/blockchain_datzm029_gp/contracts/RealEstateLending.sol": {
+      "lastModificationDate": 1736189692625,
+      "contentHash": "1e3a87c8b214a4b745f0d4d151dd26d1",
+      "sourceName": "contracts/RealEstateLending.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RealEstateLending"
+      ]
     }
   }
 }
