@@ -63,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 value: ethers.utils.parseEther(amount.toString())
             });
             
-            const receipt = await tx.wait();
+            await tx.wait();
             
             res.status(200).json({ 
                 message: 'Investment successful', 
