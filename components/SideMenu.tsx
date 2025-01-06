@@ -35,6 +35,16 @@ export function SideMenu() {
             Wallet
           </Link>
         </li>
+        <li className="text-center">
+          <Link href="/dashboard/loans" className="text-gray-700 hover:text-gray-900">
+            Available Loans
+          </Link>
+        </li>
+        <li className="text-center">
+          <Link href="/dashboard/create-loan" className="text-gray-700 hover:text-gray-900">
+            Place New Loan
+          </Link>
+        </li>
       </ul>
       
       <div className="flex-1"></div>
