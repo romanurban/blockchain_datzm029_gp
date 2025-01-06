@@ -91,7 +91,7 @@ export default function LoansPage() {
                             <div key={loan.id} className="border rounded-lg p-4">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h3 className="font-semibold">Loan #{loan.id}</h3>
+                                        <h3 className="font-semibold">Property: {loan.propertyAddress}</h3>
                                         <p className="text-sm text-muted-foreground">
                                             Amount: {loan.amount} ETH
                                         </p>
@@ -102,7 +102,7 @@ export default function LoansPage() {
                                             Duration: {loan.duration} months
                                         </p>
                                         <p className="text-sm text-muted-foreground">
-                                            Property: {loan.propertyAddress}
+                                            Loan #{loan.id}
                                         </p>
                                     </div>
                                     <div className="text-right">
