@@ -41,6 +41,82 @@ interface Loan {
 // Add a fallback image
 const DEFAULT_IMAGE = '/images/apartment001/image.jpg';
 
+// Add mock data constant
+const MOCK_LOANS = [
+    {
+        id: '1',
+        borrower: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        amount: '50000000000000000000', // 50 ETH
+        fundedAmount: '25000000000000000000', // 25 ETH
+        interestRate: '8.5',
+        duration: '12',
+        isActive: true,
+        propertyHash: '0xabc...def',
+        propertyAddress: 'Modern Apartment in Manhattan, NY',
+        isVerified: true,
+        propertyDetails: {
+            type: 'apartment',
+            size: 0,
+            bedrooms: 0,
+            bathrooms: 0,
+            yearBuilt: 0,
+            location: '',
+            description: '',
+            amenities: [],
+            images: [],
+            documents: []
+        }
+    },
+    {
+        id: '2',
+        borrower: '0x934d35Cc6634C0532925a3b844Bc454e4438f555',
+        amount: '100000000000000000000', // 100 ETH
+        fundedAmount: '30000000000000000000', // 30 ETH
+        interestRate: '9.0',
+        duration: '24',
+        isActive: true,
+        propertyHash: '0xdef...123',
+        propertyAddress: 'Luxury Villa in Miami Beach, FL',
+        isVerified: true,
+        propertyDetails: {
+            type: 'house',
+            size: 0,
+            bedrooms: 0,
+            bathrooms: 0,
+            yearBuilt: 0,
+            location: '',
+            description: '',
+            amenities: [],
+            images: [],
+            documents: []
+        }
+    },
+    {
+        id: '3',
+        borrower: '0x156d35Cc6634C0532925a3b844Bc454e4438f777',
+        amount: '75000000000000000000', // 75 ETH
+        fundedAmount: '50000000000000000000', // 50 ETH
+        interestRate: '7.5',
+        duration: '18',
+        isActive: true,
+        propertyHash: '0xghi...456',
+        propertyAddress: 'Commercial Office Space in Downtown, LA',
+        isVerified: true,
+        propertyDetails: {
+            type: 'office',
+            size: 0,
+            bedrooms: 0,
+            bathrooms: 0,
+            yearBuilt: 0,
+            location: '',
+            description: '',
+            amenities: [],
+            images: [],
+            documents: []
+        }
+    }
+];
+
 export default function LoansPage() {
     const [loans, setLoans] = useState<Loan[]>([]);
     const [loading, setLoading] = useState(true);
@@ -54,14 +130,20 @@ export default function LoansPage() {
         try {
             setLoading(true);
             const response = await fetch('/api/get-loans');
-            if (!response.ok) throw new Error('Failed to fetch loans');
             
-            // Transform API data to include property type and a default image
+            if (!response.ok) {
+                throw new Error('Failed to fetch loans');
+            }
+            
             const apiData = await response.json();
-            const loansWithDetails = apiData.map((loan: any) => ({
+            
+            // If API returns empty array or no data, use mock data
+            const loansData = apiData.length > 0 ? apiData : MOCK_LOANS;
+            
+            const loansWithDetails = loansData.map((loan: any) => ({
                 ...loan,
                 propertyDetails: {
-                    type: determinePropertyType(loan.propertyAddress), // Helper function to determine type
+                    type: determinePropertyType(loan.propertyAddress),
                     size: 0,
                     bedrooms: 0,
                     bathrooms: 0,
@@ -69,7 +151,7 @@ export default function LoansPage() {
                     location: loan.propertyAddress,
                     description: '',
                     amenities: [],
-                    images: [DEFAULT_IMAGE], // Add default image
+                    images: [DEFAULT_IMAGE],
                     documents: []
                 }
             }));
@@ -77,7 +159,18 @@ export default function LoansPage() {
             setLoans(loansWithDetails);
             setError(null);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to fetch loans');
+            console.warn('Using mock data due to API error:', err);
+            // Use mock data on error
+            const loansWithDetails = MOCK_LOANS.map(loan => ({
+                ...loan,
+                propertyDetails: {
+                    ...loan.propertyDetails,
+                    type: determinePropertyType(loan.propertyAddress),
+                    images: [DEFAULT_IMAGE]
+                }
+            }));
+            setLoans(loansWithDetails);
+            setError('Using demo data - API unavailable');
         } finally {
             setLoading(false);
         }
@@ -302,7 +395,109 @@ export default function LoansPage() {
     );
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div className="text-destructive">{error}</div>;
+
+    // Update error display to be less prominent for mock data
+    if (error) {
+        return (
+            <div className="container mx-auto p-4">
+                <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-md p-4 mb-4">
+                    {error}
+                </div>
+                {/* Continue rendering the page with mock data */}
+                <Card>
+                    <CardHeader>
+                        <h1 className="text-2xl font-bold">Available Loan Opportunities</h1>
+                        <p className="text-muted-foreground">Invest in available loan opportunities</p>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid gap-4">
+                            {loans.map((loan) => (
+                                <div 
+                                    key={loan.id} 
+                                    className="border rounded-lg p-4 hover:bg-muted/50 cursor-pointer transition-colors"
+                                    onClick={() => setSelectedLoan({ 
+                                        ...loan, 
+                                        propertyDetails: getMockPropertyDetails(loan.propertyDetails.type, loan.id) 
+                                    })}
+                                >
+                                    <div className="flex gap-4">
+                                        <div className="relative w-24 h-24 rounded-md overflow-hidden">
+                                            <Image
+                                                src={getPropertyThumbnailById(loan.propertyDetails.type, loan.id) || DEFAULT_IMAGE}
+                                                alt="Property thumbnail"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold">Property: {loan.propertyAddress}</h3>
+                                            <p className="text-sm text-muted-foreground">
+                                                Amount: {formatUsd(ethToUsd(loan.amount))}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                Interest Rate: {loan.interestRate}%
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                Duration: {loan.duration} months
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                Loan #{loan.id}
+                                            </p>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className={`px-2 py-1 rounded-full text-xs ${
+                                                loan.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                                            }`}>
+                                                {loan.isActive ? 'Active' : 'Funded'}
+                                            </span>
+                                            <p className="text-sm mt-2">
+                                                Progress: {formatUsd(ethToUsd(loan.fundedAmount))} / {formatUsd(ethToUsd(loan.amount))}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {loan.isActive && (
+                                        <div className="flex flex-col gap-2 mt-4" onClick={e => e.stopPropagation()}>
+                                            <input
+                                                type="number"
+                                                step="0.01"
+                                                placeholder="Amount to invest (USD)"
+                                                className="flex h-10 rounded-md border border-input px-3 py-2 text-sm"
+                                                value={investAmount[loan.id] || ''}
+                                                onChange={(e) => setInvestAmount({
+                                                    ...investAmount,
+                                                    [loan.id]: e.target.value
+                                                })}
+                                            />
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleInvest(loan.id);
+                                                }}
+                                                className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md"
+                                            >
+                                                Invest
+                                            </button>
+                                            {investStatus[loan.id] && (
+                                                <p className={`text-sm ${
+                                                    investStatus[loan.id].includes('successful') 
+                                                        ? 'text-green-600' 
+                                                        : 'text-destructive'
+                                                }`}>
+                                                    {investStatus[loan.id]}
+                                                </p>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+                
+                {selectedLoan && <PropertyDetailModal loan={selectedLoan} />}
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto p-4">
@@ -358,7 +553,7 @@ export default function LoansPage() {
                                     </div>
                                 </div>
                                 {loan.isActive && (
-                                    <div className="flex flex-col gap-2 mt-4">
+                                    <div className="flex flex-col gap-2 mt-4" onClick={e => e.stopPropagation()}>
                                         <input
                                             type="number"
                                             step="0.01"
@@ -371,7 +566,10 @@ export default function LoansPage() {
                                             })}
                                         />
                                         <button
-                                            onClick={() => handleInvest(loan.id)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleInvest(loan.id);
+                                            }}
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md"
                                         >
                                             Invest
