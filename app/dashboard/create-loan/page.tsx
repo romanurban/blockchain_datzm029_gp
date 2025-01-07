@@ -3,7 +3,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { usdToEth, formatUsd } from '@/utils/currency';
+import { usdToEth } from '@/utils/currency';
 
 export default function CreateLoanPage() {
     const { account } = useContext(AuthContext);
