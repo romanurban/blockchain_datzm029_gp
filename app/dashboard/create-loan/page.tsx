@@ -3,6 +3,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { usdToEth, formatUsd } from '@/utils/currency';
 
 export default function CreateLoanPage() {
     const { account } = useContext(AuthContext);
@@ -20,12 +21,15 @@ export default function CreateLoanPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            // Convert USD to ETH for the contract
+            const ethAmount = usdToEth(parseFloat(formData.amount));
+            
             const response = await fetch('/api/create-loan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
-                    amount: parseFloat(formData.amount),
+                    amount: ethAmount,
                     interestRate: parseFloat(formData.interestRate),
                     duration: parseInt(formData.duration),
                 })
@@ -57,8 +61,8 @@ export default function CreateLoanPage() {
         <div className="container mx-auto p-4">
             <Card>
                 <CardHeader>
-                    <h1 className="text-2xl font-bold">Create New Loan</h1>
-                    <p className="text-muted-foreground">Create a new loan request with property details</p>
+                    <h1 className="text-2xl font-bold">Create New Loan Opportunity</h1>
+                    <p className="text-muted-foreground">Create a new loan request in USD</p>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -83,19 +87,28 @@ export default function CreateLoanPage() {
 
                             <div className="flex flex-col space-y-1.5">
                                 <label className="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Amount (ETH)
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        required
-                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                        value={formData.amount}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            amount: e.target.value
-                                        })}
-                                    />
+                                    Amount (USD)
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-2.5">$</span>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            required
+                                            className="flex h-10 w-full rounded-md border border-input bg-background pl-7 pr-3 py-2 text-sm"
+                                            value={formData.amount}
+                                            onChange={(e) => setFormData({
+                                                ...formData,
+                                                amount: e.target.value
+                                            })}
+                                            placeholder="0.00"
+                                        />
+                                    </div>
                                 </label>
+                                {formData.amount && (
+                                    <p className="text-xs text-muted-foreground">
+                                        ≈ {parseFloat(usdToEth(parseFloat(formData.amount))).toFixed(6)} ETH
+                                    </p>
+                                )}
                             </div>
                             <div className="flex flex-col space-y-1.5">
                                 <label className="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -129,6 +142,29 @@ export default function CreateLoanPage() {
                             </div>
                         </div>
 
+                        {/* Add document upload section before the helper text */}
+                        <div className="space-y-2">
+                            <p className="text-sm font-medium">Property Documents</p>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => alert('Document upload functionality coming soon!')}
+                                    className="flex items-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 rounded-md"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="17 8 12 3 7 8"/>
+                                        <line x1="12" y1="3" x2="12" y2="15"/>
+                                    </svg>
+                                    Upload Documents
+                                </button>
+                                <span className="text-sm text-muted-foreground">No files selected</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Upload property documentation (deed, appraisal, inspection reports)
+                            </p>
+                        </div>
+
                         {/* Add helper text */}
                         <p className="text-sm text-muted-foreground mt-2">
                             Note: Property must be verified by admin before loan creation.
@@ -139,7 +175,7 @@ export default function CreateLoanPage() {
                             className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md"
                             disabled={!account}
                         >
-                            Create Loan
+                            Create Loan Request
                         </button>
                     </form>
                     {status && (

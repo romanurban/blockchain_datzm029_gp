@@ -37,12 +37,12 @@ export function SideMenu() {
         </li>
         <li className="text-center">
           <Link href="/dashboard/loans" className="text-gray-700 hover:text-gray-900">
-            Available Loans
+            Available Opportunities
           </Link>
         </li>
         <li className="text-center">
           <Link href="/dashboard/create-loan" className="text-gray-700 hover:text-gray-900">
-            Place New Loan
+            Publish New Opportunity
           </Link>
         </li>
       </ul>

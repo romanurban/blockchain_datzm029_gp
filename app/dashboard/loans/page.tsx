@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ethToUsd, formatUsd, usdToEth } from '@/utils/currency';
 
 interface Loan {
     id: string;
@@ -46,16 +47,19 @@ export default function LoansPage() {
 
     const handleInvest = async (loanId: string) => {
         try {
-            const amount = investAmount[loanId];
-            if (!amount) {
+            const usdAmount = investAmount[loanId];
+            if (!usdAmount) {
                 setInvestStatus({...investStatus, [loanId]: 'Please enter an amount'});
                 return;
             }
 
+            // Convert USD to ETH for contract interaction
+            const ethAmount = usdToEth(parseFloat(usdAmount));
+
             const response = await fetch('/api/invest-in-loan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ loanId, amount })
+                body: JSON.stringify({ loanId, amount: ethAmount })
             });
 
             const data = await response.json();
@@ -82,7 +86,7 @@ export default function LoansPage() {
         <div className="container mx-auto p-4">
             <Card>
                 <CardHeader>
-                    <h1 className="text-2xl font-bold">Available Loans</h1>
+                    <h1 className="text-2xl font-bold">Available Loan Opportunities</h1>
                     <p className="text-muted-foreground">Invest in available loan opportunities</p>
                 </CardHeader>
                 <CardContent>
@@ -93,7 +97,7 @@ export default function LoansPage() {
                                     <div>
                                         <h3 className="font-semibold">Property: {loan.propertyAddress}</h3>
                                         <p className="text-sm text-muted-foreground">
-                                            Amount: {loan.amount} ETH
+                                            Amount: {formatUsd(ethToUsd(loan.amount))}
                                         </p>
                                         <p className="text-sm text-muted-foreground">
                                             Interest Rate: {loan.interestRate}%
@@ -112,7 +116,7 @@ export default function LoansPage() {
                                             {loan.isActive ? 'Active' : 'Funded'}
                                         </span>
                                         <p className="text-sm mt-2">
-                                            Progress: {loan.fundedAmount}/{loan.amount} ETH
+                                            Progress: {formatUsd(ethToUsd(loan.fundedAmount))} / {formatUsd(ethToUsd(loan.amount))}
                                         </p>
                                     </div>
                                 </div>
@@ -121,7 +125,7 @@ export default function LoansPage() {
                                         <input
                                             type="number"
                                             step="0.01"
-                                            placeholder="Amount to invest (ETH)"
+                                            placeholder="Amount to invest (USD)"
                                             className="flex h-10 rounded-md border border-input px-3 py-2 text-sm"
                                             value={investAmount[loan.id] || ''}
                                             onChange={(e) => setInvestAmount({
