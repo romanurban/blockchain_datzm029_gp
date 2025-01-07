@@ -60,8 +60,8 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '1',
         borrower: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-        amount: '50000', // 500 ETH (~$750,000)
-        fundedAmount: '30000', // 300 ETH
+        amount: '5000', // 500 ETH (~$750,000)
+        fundedAmount: '3000', // 300 ETH
         interestRate: '7.5',
         duration: '24',
         isActive: true,
@@ -72,8 +72,8 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '2',
         borrower: '0x934d35Cc6634C0532925a3b844Bc454e4438f555',
-        amount: '150000', // 1000 ETH (~$1.5M)
-        fundedAmount: '40000', // 400 ETH
+        amount: '15000', // 1000 ETH (~$1.5M)
+        fundedAmount: '4000', // 400 ETH
         interestRate: '8.2',
         duration: '36',
         isActive: true,
@@ -84,8 +84,8 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '3',
         borrower: '0x156d35Cc6634C0532925a3b844Bc454e4438f777',
-        amount: '90000', // 600 ETH (~$900,000)
-        fundedAmount: '45000', // 450 ETH
+        amount: '9000', // 600 ETH (~$900,000)
+        fundedAmount: '4500', // 450 ETH
         interestRate: '7.8',
         duration: '30',
         isActive: true,
@@ -155,7 +155,6 @@ export default function LoansPage() {
                 }
             }));
             setLoans(loansWithDetails);
-            setError('Using demo data - API unavailable');
         } finally {
             setLoading(false);
         }
