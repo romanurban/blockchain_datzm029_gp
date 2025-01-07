@@ -60,8 +60,8 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '1',
         borrower: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-        amount: '500000000000000000000', // 500 ETH (~$750,000)
-        fundedAmount: '300000000000000000000', // 300 ETH
+        amount: '500000', // 500 ETH (~$750,000)
+        fundedAmount: '300000', // 300 ETH
         interestRate: '7.5',
         duration: '24',
         isActive: true,
@@ -72,8 +72,8 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '2',
         borrower: '0x934d35Cc6634C0532925a3b844Bc454e4438f555',
-        amount: '1000000000000000000000', // 1000 ETH (~$1.5M)
-        fundedAmount: '400000000000000000000', // 400 ETH
+        amount: '1500000', // 1000 ETH (~$1.5M)
+        fundedAmount: '400000', // 400 ETH
         interestRate: '8.2',
         duration: '36',
         isActive: true,
@@ -84,8 +84,8 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '3',
         borrower: '0x156d35Cc6634C0532925a3b844Bc454e4438f777',
-        amount: '600000000000000000000', // 600 ETH (~$900,000)
-        fundedAmount: '450000000000000000000', // 450 ETH
+        amount: '900000', // 600 ETH (~$900,000)
+        fundedAmount: '450000', // 450 ETH
         interestRate: '7.8',
         duration: '30',
         isActive: true,
