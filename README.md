@@ -1,6 +1,6 @@
 # Blockchain Project
 
-This is a Web3 development project that combines Next.js for the frontend and Hardhat for smart contract development and testing. The project allows users to interact with smart contracts on the blockchain through a modern web interface.
+This is a Web3 development project that combines Next.js for the frontend and Hardhat for smart contract development and testing. The project implements a decentralized crowdfunding platform where users can create and participate in fundraising campaigns using cryptocurrency.
 
 ## Project Overview
 
@@ -9,6 +9,23 @@ This project implements:
 - Web3 integration using ethers.js
 - Modern UI with Next.js 13+ and TypeScript
 - Local blockchain development with Hardhat
+
+### Crowdfunding Features
+
+The platform enables users to:
+- Create new fundraising campaigns with specific goals and deadlines
+- Contribute ETH to existing campaigns
+- Track campaign progress and funding status in real-time
+- Withdraw funds when campaign goals are met
+- Refund contributors if campaign goals are not met by deadline
+
+Key Smart Contract Functions:
+- `createCampaign`: Start a new fundraising campaign
+- `contributeToCampaign`: Send ETH to support a campaign
+- `withdrawFunds`: Campaign creators can withdraw funds after successful completion
+- `requestRefund`: Contributors can get refunds for failed campaigns
+- `getCampaignDetails`: View detailed information about any campaign
+- `getAllCampaigns`: List all active and past campaigns
 
 ## Getting Started
 
