@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ethToUsd, formatUsd, usdToEth } from '@/utils/currency';
 import { useWallet } from '@/context/WalletContext';
 import Image from 'next/image';
-import { getPropertyImages, getPropertyThumbnail, PropertyType, getPropertyImagesById, getPropertyThumbnailById } from '@/utils/images';
+import { PropertyType, getPropertyImagesById, getPropertyThumbnailById } from '@/utils/images';
 
 // Update PropertyDetails interface
 interface PropertyDetails {
@@ -38,11 +38,25 @@ interface Loan {
     propertyDetails: PropertyDetails;
 }
 
+// Add interface for API loan data
+interface ApiLoan {
+    id: string;
+    borrower: string;
+    amount: string;
+    fundedAmount: string;
+    interestRate: string;
+    duration: string;
+    isActive: boolean;
+    propertyHash: string;
+    propertyAddress: string;
+    isVerified: boolean;
+}
+
 // Add a fallback image
 const DEFAULT_IMAGE = '/images/apartment001/image.jpg';
 
 // Add mock data constant
-const MOCK_LOANS = [
+const MOCK_LOANS: ApiLoan[] = [
     {
         id: '1',
         borrower: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
@@ -54,18 +68,6 @@ const MOCK_LOANS = [
         propertyHash: '0xabc...def',
         propertyAddress: 'Modern Apartment in Manhattan, NY',
         isVerified: true,
-        propertyDetails: {
-            type: 'apartment',
-            size: 0,
-            bedrooms: 0,
-            bathrooms: 0,
-            yearBuilt: 0,
-            location: '',
-            description: '',
-            amenities: [],
-            images: [],
-            documents: []
-        }
     },
     {
         id: '2',
@@ -78,18 +80,6 @@ const MOCK_LOANS = [
         propertyHash: '0xdef...123',
         propertyAddress: 'Luxury Villa in Miami Beach, FL',
         isVerified: true,
-        propertyDetails: {
-            type: 'house',
-            size: 0,
-            bedrooms: 0,
-            bathrooms: 0,
-            yearBuilt: 0,
-            location: '',
-            description: '',
-            amenities: [],
-            images: [],
-            documents: []
-        }
     },
     {
         id: '3',
@@ -102,18 +92,6 @@ const MOCK_LOANS = [
         propertyHash: '0xghi...456',
         propertyAddress: 'Commercial Office Space in Downtown, LA',
         isVerified: true,
-        propertyDetails: {
-            type: 'office',
-            size: 0,
-            bedrooms: 0,
-            bathrooms: 0,
-            yearBuilt: 0,
-            location: '',
-            description: '',
-            amenities: [],
-            images: [],
-            documents: []
-        }
     }
 ];
 
@@ -138,9 +116,9 @@ export default function LoansPage() {
             const apiData = await response.json();
             
             // If API returns empty array or no data, use mock data
-            const loansData = apiData.length > 0 ? apiData : MOCK_LOANS;
+            const loansData: ApiLoan[] = apiData.length > 0 ? apiData : MOCK_LOANS;
             
-            const loansWithDetails = loansData.map((loan: any) => ({
+            const loansWithDetails = loansData.map((loan) => ({
                 ...loan,
                 propertyDetails: {
                     type: determinePropertyType(loan.propertyAddress),
@@ -164,9 +142,16 @@ export default function LoansPage() {
             const loansWithDetails = MOCK_LOANS.map(loan => ({
                 ...loan,
                 propertyDetails: {
-                    ...loan.propertyDetails,
                     type: determinePropertyType(loan.propertyAddress),
-                    images: [DEFAULT_IMAGE]
+                    size: 0,
+                    bedrooms: 0,
+                    bathrooms: 0,
+                    yearBuilt: 0,
+                    location: loan.propertyAddress,
+                    description: '',
+                    amenities: [],
+                    images: [DEFAULT_IMAGE],
+                    documents: []
                 }
             }));
             setLoans(loansWithDetails);
@@ -185,15 +170,6 @@ export default function LoansPage() {
     };
 
     // When selecting a loan, enhance it with full property details
-    const handleLoanSelect = (loan: Loan) => {
-        setSelectedLoan({
-            ...loan,
-            propertyDetails: {
-                ...loan.propertyDetails,
-                ...getMockPropertyDetails(loan.propertyDetails.type, loan.id)
-            }
-        });
-    };
 
     useEffect(() => {
         fetchLoans();
