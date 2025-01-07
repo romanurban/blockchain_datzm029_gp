@@ -60,10 +60,10 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '1',
         borrower: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-        amount: '50000000000000000000', // 50 ETH
-        fundedAmount: '25000000000000000000', // 25 ETH
-        interestRate: '8.5',
-        duration: '12',
+        amount: '500000000000000000000', // 500 ETH (~$750,000)
+        fundedAmount: '300000000000000000000', // 300 ETH
+        interestRate: '7.5',
+        duration: '24',
         isActive: true,
         propertyHash: '0xabc...def',
         propertyAddress: 'Modern Apartment in Manhattan, NY',
@@ -72,10 +72,10 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '2',
         borrower: '0x934d35Cc6634C0532925a3b844Bc454e4438f555',
-        amount: '100000000000000000000', // 100 ETH
-        fundedAmount: '30000000000000000000', // 30 ETH
-        interestRate: '9.0',
-        duration: '24',
+        amount: '1000000000000000000000', // 1000 ETH (~$1.5M)
+        fundedAmount: '400000000000000000000', // 400 ETH
+        interestRate: '8.2',
+        duration: '36',
         isActive: true,
         propertyHash: '0xdef...123',
         propertyAddress: 'Luxury Villa in Miami Beach, FL',
@@ -84,10 +84,10 @@ const MOCK_LOANS: ApiLoan[] = [
     {
         id: '3',
         borrower: '0x156d35Cc6634C0532925a3b844Bc454e4438f777',
-        amount: '75000000000000000000', // 75 ETH
-        fundedAmount: '50000000000000000000', // 50 ETH
-        interestRate: '7.5',
-        duration: '18',
+        amount: '600000000000000000000', // 600 ETH (~$900,000)
+        fundedAmount: '450000000000000000000', // 450 ETH
+        interestRate: '7.8',
+        duration: '30',
         isActive: true,
         propertyHash: '0xghi...456',
         propertyAddress: 'Commercial Office Space in Downtown, LA',
