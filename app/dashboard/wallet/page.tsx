@@ -1,70 +1,14 @@
 'use client';
 
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { formatUsd } from '@/utils/currency';
 import { AuthContext } from '@/context/AuthContext';
-
-interface Assets {
-    available: number;
-    invested: number;
-    returns: number;
-    pending: number;
-}
-
-interface Transaction {
-    id: number;
-    type: string;
-    amount: number;
-    status: string;
-    date: string;
-    hash: string;
-}
+import { useWallet } from '@/context/WalletContext';
 
 export default function WalletPage() {
     const { account } = useContext(AuthContext);
-    const [showInvestModal, setShowInvestModal] = useState(false);
-    const [investAmount, setInvestAmount] = useState('');
-    const [assets, setAssets] = useState<Assets>({
-        available: 12500,
-        invested: 45000,
-        returns: 3750,
-        pending: 1500
-    });
-    
-    const [transactions, setTransactions] = useState<Transaction[]>([
-        { id: 1, type: 'Deposit', amount: 5000, status: 'completed', date: '2024-01-15', hash: '0x1234...5678' },
-        { id: 2, type: 'Investment', amount: -2500, status: 'completed', date: '2024-01-14', hash: '0x8765...4321' },
-        { id: 3, type: 'Return', amount: 375, status: 'completed', date: '2024-01-13', hash: '0x9876...1234' },
-        { id: 4, type: 'Withdrawal', amount: -1000, status: 'pending', date: '2024-01-12', hash: '0x4567...8901' },
-    ]);
-
-    const handleSimulateInvestment = () => {
-        const amount = parseFloat(investAmount);
-        if (isNaN(amount) || amount <= 0 || amount > assets.available) return;
-
-        // Update assets
-        setAssets(prev => ({
-            ...prev,
-            available: prev.available - amount,
-            invested: prev.invested + amount,
-            pending: prev.pending + (amount * 0.08) // Simulate 8% annual return
-        }));
-
-        // Add new transaction
-        const newTransaction = {
-            id: Date.now(),
-            type: 'Investment',
-            amount: -amount,
-            status: 'completed',
-            date: new Date().toISOString().split('T')[0],
-            hash: '0x' + Math.random().toString(16).slice(2, 10) + '...' + Math.random().toString(16).slice(2, 10)
-        };
-
-        setTransactions(prev => [newTransaction, ...prev]);
-        setShowInvestModal(false);
-        setInvestAmount('');
-    };
+    const { assets, transactions } = useWallet();
 
     return (
         <div className="container mx-auto p-4 space-y-6">
@@ -79,62 +23,7 @@ export default function WalletPage() {
                 </CardContent>
             </Card>
 
-            {/* Change Quick Invest Button */}
-            <button
-                onClick={() => setShowInvestModal(true)}
-                className="w-full bg-green-600 text-white hover:bg-green-700 h-10 px-4 py-2 rounded-md font-medium"
-            >
-                Invest Now
-            </button>
-
-            {/* Investment Modal */}
-            {showInvestModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <Card className="w-full max-w-md mx-4">
-                        <CardHeader>
-                            <h2 className="text-xl font-semibold">New Investment</h2>
-                            <p className="text-sm text-muted-foreground">Available balance: {formatUsd(assets.available)}</p>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">
-                                    Investment Amount
-                                    <div className="relative mt-1.5">
-                                        <span className="absolute left-3 top-2.5">$</span>
-                                        <input
-                                            type="number"
-                                            className="flex h-10 w-full rounded-md border border-input bg-background pl-7 pr-3 py-2"
-                                            value={investAmount}
-                                            onChange={(e) => setInvestAmount(e.target.value)}
-                                            max={assets.available}
-                                            placeholder="Enter amount"
-                                        />
-                                    </div>
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        Min: $100 | Max: {formatUsd(assets.available)}
-                                    </p>
-                                </label>
-                            </div>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={handleSimulateInvestment}
-                                    className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md font-medium"
-                                >
-                                    Confirm Investment
-                                </button>
-                                <button
-                                    onClick={() => setShowInvestModal(false)}
-                                    className="flex-1 bg-secondary text-secondary-foreground hover:bg-secondary/90 h-10 px-4 py-2 rounded-md"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            )}
-
-            {/* Asset Distribution */}
+            {/* Asset Distribution and Quick Actions Grid */}
             <div className="grid md:grid-cols-2 gap-6">
                 <Card>
                     <CardHeader>

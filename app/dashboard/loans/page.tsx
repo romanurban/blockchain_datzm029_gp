@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ethToUsd, formatUsd, usdToEth } from '@/utils/currency';
+import { useWallet } from '@/context/WalletContext';
 
 interface Loan {
     id: string;
@@ -23,6 +24,7 @@ export default function LoansPage() {
     const [error, setError] = useState<string | null>(null);
     const [investAmount, setInvestAmount] = useState<{[key: string]: string}>({});
     const [investStatus, setInvestStatus] = useState<{[key: string]: string}>({});
+    const { assets, updateAssets, addTransaction } = useWallet();
 
     // Define fetchLoans as useCallback to prevent unnecessary recreations
     const fetchLoans = useCallback(async () => {
@@ -68,6 +70,16 @@ export default function LoansPage() {
                 setInvestStatus({...investStatus, [loanId]: `Investment successful! Tx: ${data.tx}`});
                 // Refresh loans list
                 fetchLoans();
+
+                // Update wallet assets
+                updateAssets({
+                    available: assets.available - parseFloat(usdAmount),
+                    invested: assets.invested + parseFloat(usdAmount),
+                    pending: assets.pending + (parseFloat(usdAmount) * 0.08) // 8% expected return
+                });
+
+                // Add transaction
+                addTransaction('Investment', -parseFloat(usdAmount));
             } else {
                 setInvestStatus({...investStatus, [loanId]: data.error || 'Investment failed'});
             }
